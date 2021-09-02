@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Data
@@ -23,12 +24,14 @@ public class PokemonResource implements Serializable {
     private Integer weight;
     private List<PokemonAbility> abilities;
     private List<PokemonType> types;
+    private PokemonSprites sprites;
     private NamedResource species;
 
     public BasePokemon toDomain() {
         return BasePokemon.builder()
                 .name(this.name)
                 .weight(this.weight)
+                .image(fetchImage(PokemonSprites::getFrontDefault))
                 .type(fetchType())
                 .abilities(fetchAbilities())
                 .build();
@@ -39,9 +42,14 @@ public class PokemonResource implements Serializable {
                 .name(this.name)
                 .weight(this.weight)
                 .type(fetchType())
+                .image(fetchImage(PokemonSprites::getFrontDetail))
                 .abilities(fetchAbilities())
                 .evolutions(evolutions)
                 .build();
+    }
+
+    private String fetchImage(Function<PokemonSprites, String> spritesFunction) {
+        return Optional.ofNullable(this.sprites).map(spritesFunction).orElse("");
     }
 
     private String fetchType() {
