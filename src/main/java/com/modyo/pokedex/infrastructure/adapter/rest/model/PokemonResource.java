@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PokemonResource implements Serializable {
 
+    private Long id;
     private String name;
     private Integer weight;
     private List<PokemonAbility> abilities;
@@ -37,13 +38,14 @@ public class PokemonResource implements Serializable {
                 .build();
     }
 
-    public DetailedPokemon toDomain(List<String> evolutions) {
+    public DetailedPokemon toDomain(String description, List<String> evolutions) {
         return DetailedPokemon.builder()
                 .name(this.name)
                 .weight(this.weight)
                 .type(fetchType())
                 .image(fetchImage(PokemonSprites::getFrontDetail))
                 .abilities(fetchAbilities())
+                .description(description)
                 .evolutions(evolutions)
                 .build();
     }

@@ -4,6 +4,7 @@ import com.modyo.pokedex.domain.model.BasePokemon;
 import com.modyo.pokedex.domain.model.DetailedPokemon;
 import com.modyo.pokedex.infrastructure.adapter.rest.PokeApiProxy;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.ChainLink;
+import com.modyo.pokedex.infrastructure.adapter.rest.model.Characteristic;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.EvolutionChain;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.NamedResource;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonResource;
@@ -69,10 +70,12 @@ class PokeApiAdapterTest {
         given(pokeApiProxy.getEvolutions("evolution-chain-url"))
                 .willReturn(evolutionChain);
 
+        given(pokeApiProxy.getCharacteristic(1L))
+                .willReturn(Characteristic.builder().build());
+
         DetailedPokemon pokemon = pokeApiAdapter.get("name");
 
         assertThat(pokemon.getEvolutions()).containsOnly("some-specie", "another-specie");
-
     }
 
     private EvolutionChain getEvolutionChain() {
@@ -97,6 +100,7 @@ class PokeApiAdapterTest {
 
     private PokemonResource getPokemonResource() {
         return PokemonResource.builder()
+                .id(1L)
                 .species(getNamedResource("some-specie", "species-url"))
                 .build();
     }

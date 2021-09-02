@@ -1,5 +1,6 @@
 package com.modyo.pokedex.infrastructure.adapter.rest;
 
+import com.modyo.pokedex.infrastructure.adapter.rest.model.Characteristic;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.EvolutionChain;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonResource;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonResponse;
@@ -17,16 +18,19 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class PokeApiProxy {
 
     private final RestTemplate restTemplate;
-    private final String url;
+    private final String pokemonUrl;
+    private final String characteristicUrl;
 
     public PokeApiProxy(RestTemplate restTemplate,
-                        @Value("${pokeapi.pokemon.url}") String url) {
+                        @Value("${pokeapi.pokemon.url}") String pokemonUrl,
+                        @Value("${pokeapi.characteristic.url}") String characteristicUrl) {
         this.restTemplate = restTemplate;
-        this.url = url;
+        this.pokemonUrl = pokemonUrl;
+        this.characteristicUrl = characteristicUrl;
     }
 
     public PokemonResponse getPokemons(long offset, long limit) {
-        String pageableUrl = UriComponentsBuilder.fromHttpUrl(url)
+        String pageableUrl = UriComponentsBuilder.fromHttpUrl(pokemonUrl)
                 .queryParam("offset", offset)
                 .queryParam("limit", limit)
                 .build().toUriString();
@@ -36,7 +40,7 @@ public class PokeApiProxy {
 
     @Cacheable("pokemon-resource")
     public PokemonResource getPokemonResource(String name) {
-        String resourceUrl = url.concat(name);
+        String resourceUrl = pokemonUrl.concat(name);
         log.info("gettingPokemonResource, name={}, url={}", name, resourceUrl);
         ResponseEntity<PokemonResource> responseEntity = restTemplate.getForEntity(resourceUrl, PokemonResource.class);
         return responseEntity.getBody();
@@ -53,6 +57,14 @@ public class PokeApiProxy {
     public EvolutionChain getEvolutions(String url) {
         log.info("gettingEvolutionChainByUrl, url={}", url);
         ResponseEntity<EvolutionChain> responseEntity = restTemplate.getForEntity(url, EvolutionChain.class);
+        return responseEntity.getBody();
+    }
+
+    @Cacheable("characteristic")
+    public Characteristic getCharacteristic(Long id) {
+        String resourceUrl = characteristicUrl.concat(String.valueOf(id));
+        log.info("gettingCharacteristicByUrl, url={}", resourceUrl);
+        ResponseEntity<Characteristic> responseEntity = restTemplate.getForEntity(resourceUrl, Characteristic.class);
         return responseEntity.getBody();
     }
 }

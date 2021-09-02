@@ -5,6 +5,7 @@ import com.modyo.pokedex.domain.model.DetailedPokemon;
 import com.modyo.pokedex.domain.port.GetPokemonDetailsPort;
 import com.modyo.pokedex.domain.port.GetPokemonsPort;
 import com.modyo.pokedex.infrastructure.adapter.rest.PokeApiProxy;
+import com.modyo.pokedex.infrastructure.adapter.rest.model.Characteristic;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.EvolutionChain;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonResource;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonResponse;
@@ -35,9 +36,14 @@ public class PokeApiAdapter implements GetPokemonsPort, GetPokemonDetailsPort {
     @Override
     public DetailedPokemon get(String name) {
         PokemonResource pokemonResource = pokeApiProxy.getPokemonResource(name);
-        // TODO description
+        String description = getDescription(pokemonResource);
         List<String> evolutions = getEvolutions(pokemonResource);
-        return pokemonResource.toDomain(evolutions);
+        return pokemonResource.toDomain(description, evolutions);
+    }
+
+    private String getDescription(PokemonResource pokemonResource) {
+        Characteristic characteristic = pokeApiProxy.getCharacteristic(pokemonResource.getId());
+        return characteristic.fetchDescription("en");
     }
 
     private List<String> getEvolutions(PokemonResource pokemonResource) {
@@ -45,7 +51,6 @@ public class PokeApiAdapter implements GetPokemonsPort, GetPokemonDetailsPort {
         PokemonSpecies species = pokeApiProxy.getSpecies(speciesUrl);
         String evolutionChainUrl = species.getEvolutionChain().getUrl();
         EvolutionChain evolutionChain = pokeApiProxy.getEvolutions(evolutionChainUrl);
-        return evolutionChain.getChain().getEvolutions();
+        return evolutionChain.getEvolutions();
     }
-
 }

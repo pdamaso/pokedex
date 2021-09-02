@@ -10,5 +10,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder(toBuilder = true)
 public class DetailedPokemon extends BasePokemon {
+    private String description;
     private List<String> evolutions;
 }

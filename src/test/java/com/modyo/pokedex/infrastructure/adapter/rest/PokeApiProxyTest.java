@@ -21,17 +21,18 @@ class PokeApiProxyTest {
     private PokeApiProxy pokeApiProxy;
     @Mock
     private RestTemplate restTemplate;
-    private String url;
+    private String pokemonUrl;
 
     @BeforeEach
     void setUp() {
-        url = "http://some-url/";
-        pokeApiProxy = new PokeApiProxy(restTemplate, url);
+        pokemonUrl = "http://some-url/poke";
+        String charasteristicUrl = "http://some-url/char";
+        pokeApiProxy = new PokeApiProxy(restTemplate, pokemonUrl, charasteristicUrl);
     }
 
     @Test
     void shouldGetPokemons() {
-        String pageableUrl = url.concat("?offset=0&limit=20");
+        String pageableUrl = pokemonUrl.concat("?offset=0&limit=20");
         given(restTemplate.getForEntity(pageableUrl, PokemonResponse.class))
                 .willReturn(ResponseEntity.ok().build());
         pokeApiProxy.getPokemons(0, 20);
@@ -40,10 +41,10 @@ class PokeApiProxyTest {
 
     @Test
     void shouldGetPokemon() {
-        given(restTemplate.getForEntity(url.concat("name"), PokemonResource.class))
+        given(restTemplate.getForEntity(pokemonUrl.concat("name"), PokemonResource.class))
                 .willReturn(ResponseEntity.ok().build());
         pokeApiProxy.getPokemonResource("name");
-        then(restTemplate).should().getForEntity(url.concat("name"), PokemonResource.class);
+        then(restTemplate).should().getForEntity(pokemonUrl.concat("name"), PokemonResource.class);
     }
 
     @Test
