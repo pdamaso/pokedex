@@ -1,7 +1,7 @@
 package com.modyo.pokedex.domain;
 
-import com.modyo.pokedex.domain.model.PokemonBasicInfo;
-import com.modyo.pokedex.domain.model.PokemonDetailInfo;
+import com.modyo.pokedex.domain.model.BasePokemon;
+import com.modyo.pokedex.domain.model.DetailedPokemon;
 import com.modyo.pokedex.domain.port.GetPokemonDetailsPort;
 import com.modyo.pokedex.domain.port.GetPokemonsPort;
 import org.springframework.stereotype.Service;
@@ -20,11 +20,11 @@ public class PokedexService {
         this.getPokemonDetailsPort = getPokemonDetailsPort;
     }
 
-    public List<PokemonBasicInfo> getPokemons() {
-        return getPokemonsPort.getAll();
+    public List<BasePokemon> getPokemons(long offset, long limit) {
+        return getPokemonsPort.getPokemons(offset, limit);
     }
 
-    public PokemonDetailInfo getPokemon(String name) {
+    public DetailedPokemon getPokemon(String name) {
         return getPokemonDetailsPort.get(name);
     }
 }

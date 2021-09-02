@@ -1,7 +1,7 @@
 package com.modyo.pokedex.infrastructure.adapter;
 
-import com.modyo.pokedex.domain.model.PokemonBasicInfo;
-import com.modyo.pokedex.domain.model.PokemonDetailInfo;
+import com.modyo.pokedex.domain.model.BasePokemon;
+import com.modyo.pokedex.domain.model.DetailedPokemon;
 import com.modyo.pokedex.infrastructure.adapter.rest.PokeApiProxy;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.ChainLink;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.EvolutionChain;
@@ -41,7 +41,7 @@ class PokeApiAdapterTest {
         String otherPokemonName = "xyz";
 
         PokemonResponse pokemonResponse = getPokemonResponse(aPokemonName, otherPokemonName);
-        given(pokeApiProxy.getPokemonList())
+        given(pokeApiProxy.getPokemons(0, 20))
                 .willReturn(pokemonResponse);
 
         given(pokeApiProxy.getPokemonResource(aPokemonName))
@@ -49,7 +49,7 @@ class PokeApiAdapterTest {
         given(pokeApiProxy.getPokemonResource(otherPokemonName))
                 .willReturn(getPokemonResource());
 
-        List<PokemonBasicInfo> all = pokeApiAdapter.getAll();
+        List<BasePokemon> all = pokeApiAdapter.getPokemons(0, 20);
 
         assertThat(all).hasSize(2);
 
@@ -69,7 +69,7 @@ class PokeApiAdapterTest {
         given(pokeApiProxy.getEvolutions("evolution-chain-url"))
                 .willReturn(evolutionChain);
 
-        PokemonDetailInfo pokemon = pokeApiAdapter.get("name");
+        DetailedPokemon pokemon = pokeApiAdapter.get("name");
 
         assertThat(pokemon.getEvolutions()).containsOnly("some-specie", "another-specie");
 

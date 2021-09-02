@@ -1,7 +1,7 @@
 package com.modyo.pokedex.infrastructure.adapter.rest.model;
 
-import com.modyo.pokedex.domain.model.PokemonBasicInfo;
-import com.modyo.pokedex.domain.model.PokemonDetailInfo;
+import com.modyo.pokedex.domain.model.BasePokemon;
+import com.modyo.pokedex.domain.model.DetailedPokemon;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,8 +25,8 @@ public class PokemonResource implements Serializable {
     private List<PokemonType> types;
     private NamedResource species;
 
-    public PokemonBasicInfo toBasicDomain() {
-        return PokemonBasicInfo.builder()
+    public BasePokemon toDomain() {
+        return BasePokemon.builder()
                 .name(this.name)
                 .weight(this.weight)
                 .type(fetchType())
@@ -34,8 +34,8 @@ public class PokemonResource implements Serializable {
                 .build();
     }
 
-    public PokemonDetailInfo toDetailDomain(List<String> evolutions) {
-        return PokemonDetailInfo.builder()
+    public DetailedPokemon toDomain(List<String> evolutions) {
+        return DetailedPokemon.builder()
                 .name(this.name)
                 .weight(this.weight)
                 .type(fetchType())

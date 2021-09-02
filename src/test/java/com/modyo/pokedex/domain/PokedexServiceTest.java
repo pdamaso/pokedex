@@ -23,8 +23,8 @@ class PokedexServiceTest {
 
     @Test
     void shouldGetPokemons() {
-        pokedexService.getPokemons();
-        then(getPokemonsPort).should().getAll();
+        pokedexService.getPokemons(0, 20);
+        then(getPokemonsPort).should().getPokemons(0, 20);
     }
 
     @Test

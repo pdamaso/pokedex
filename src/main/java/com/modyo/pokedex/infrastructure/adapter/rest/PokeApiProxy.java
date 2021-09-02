@@ -10,6 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @Component
@@ -24,8 +25,12 @@ public class PokeApiProxy {
         this.url = url;
     }
 
-    public PokemonResponse getPokemonList() {
-        ResponseEntity<PokemonResponse> responseEntity = restTemplate.getForEntity(url, PokemonResponse.class);
+    public PokemonResponse getPokemons(long offset, long limit) {
+        String pageableUrl = UriComponentsBuilder.fromHttpUrl(url)
+                .queryParam("offset", offset)
+                .queryParam("limit", limit)
+                .build().toUriString();
+        ResponseEntity<PokemonResponse> responseEntity = restTemplate.getForEntity(pageableUrl, PokemonResponse.class);
         return responseEntity.getBody();
     }
 

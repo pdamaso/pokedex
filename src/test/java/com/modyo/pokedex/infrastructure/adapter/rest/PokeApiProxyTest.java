@@ -25,16 +25,17 @@ class PokeApiProxyTest {
 
     @BeforeEach
     void setUp() {
-        url = "some-url/";
+        url = "http://some-url/";
         pokeApiProxy = new PokeApiProxy(restTemplate, url);
     }
 
     @Test
     void shouldGetPokemons() {
-        given(restTemplate.getForEntity(url, PokemonResponse.class))
+        String pageableUrl = url.concat("?offset=0&limit=20");
+        given(restTemplate.getForEntity(pageableUrl, PokemonResponse.class))
                 .willReturn(ResponseEntity.ok().build());
-        pokeApiProxy.getPokemonList();
-        then(restTemplate).should().getForEntity(url, PokemonResponse.class);
+        pokeApiProxy.getPokemons(0, 20);
+        then(restTemplate).should().getForEntity(pageableUrl, PokemonResponse.class);
     }
 
     @Test

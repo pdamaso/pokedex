@@ -1,7 +1,7 @@
 package com.modyo.pokedex.infrastructure.adapter;
 
-import com.modyo.pokedex.domain.model.PokemonBasicInfo;
-import com.modyo.pokedex.domain.model.PokemonDetailInfo;
+import com.modyo.pokedex.domain.model.BasePokemon;
+import com.modyo.pokedex.domain.model.DetailedPokemon;
 import com.modyo.pokedex.domain.port.GetPokemonDetailsPort;
 import com.modyo.pokedex.domain.port.GetPokemonsPort;
 import com.modyo.pokedex.infrastructure.adapter.rest.PokeApiProxy;
@@ -24,21 +24,20 @@ public class PokeApiAdapter implements GetPokemonsPort, GetPokemonDetailsPort {
     }
 
     @Override
-    public List<PokemonBasicInfo> getAll() {
-        // TODO pagination | offset & limit
-        PokemonResponse pokemonResources = pokeApiProxy.getPokemonList();
-        return pokemonResources.getResults().stream()
+    public List<BasePokemon> getPokemons(long offset, long limit) {
+        PokemonResponse pokemonResources = pokeApiProxy.getPokemons(offset, limit);
+        return pokemonResources.getResults().parallelStream()
                 .map(namedResource -> pokeApiProxy.getPokemonResource(namedResource.getName()))
-                .map(PokemonResource::toBasicDomain)
+                .map(PokemonResource::toDomain)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public PokemonDetailInfo get(String name) {
+    public DetailedPokemon get(String name) {
         PokemonResource pokemonResource = pokeApiProxy.getPokemonResource(name);
         // TODO description
         List<String> evolutions = getEvolutions(pokemonResource);
-        return pokemonResource.toDetailDomain(evolutions);
+        return pokemonResource.toDomain(evolutions);
     }
 
     private List<String> getEvolutions(PokemonResource pokemonResource) {

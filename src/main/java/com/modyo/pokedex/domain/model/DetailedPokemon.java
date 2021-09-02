@@ -9,6 +9,6 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder(toBuilder = true)
-public class PokemonDetailInfo extends PokemonBasicInfo {
+public class DetailedPokemon extends BasePokemon {
     private List<String> evolutions;
 }
