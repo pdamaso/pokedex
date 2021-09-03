@@ -28,13 +28,13 @@ public class PokeApiAdapter implements GetPokemonsPort, GetPokemonDetailsPort {
     public List<BasePokemon> getPokemons(long offset, long limit) {
         PokemonResponse pokemonResources = pokeApiProxy.getPokemons(offset, limit);
         return pokemonResources.getResults().parallelStream()
-                .map(namedResource -> pokeApiProxy.getPokemonResource(namedResource.getName()))
+                .map(resource -> pokeApiProxy.getPokemonResource(resource.getName()))
                 .map(PokemonResource::toDomain)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public DetailedPokemon get(String name) {
+    public DetailedPokemon getPokemon(String name) {
         PokemonResource pokemonResource = pokeApiProxy.getPokemonResource(name);
         String description = getDescription(pokemonResource);
         List<String> evolutions = getEvolutions(pokemonResource);

@@ -5,11 +5,15 @@ import com.modyo.pokedex.domain.model.DetailedPokemon;
 import com.modyo.pokedex.infrastructure.adapter.rest.PokeApiProxy;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.ChainLink;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.Characteristic;
+import com.modyo.pokedex.infrastructure.adapter.rest.model.Description;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.EvolutionChain;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.NamedResource;
+import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonAbility;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonResource;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonResponse;
 import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonSpecies;
+import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonSprites;
+import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -70,12 +74,22 @@ class PokeApiAdapterTest {
         given(pokeApiProxy.getEvolutions("evolution-chain-url"))
                 .willReturn(evolutionChain);
 
+        Characteristic characteristic = getCharacteristic();
         given(pokeApiProxy.getCharacteristic(1L))
-                .willReturn(Characteristic.builder().build());
+                .willReturn(characteristic);
 
-        DetailedPokemon pokemon = pokeApiAdapter.get("name");
+        DetailedPokemon pokemon = pokeApiAdapter.getPokemon("name");
 
         assertThat(pokemon.getEvolutions()).containsOnly("some-specie", "another-specie");
+    }
+
+    private Characteristic getCharacteristic() {
+        Description description = Description.builder()
+                .description("some-description")
+                .build();
+        return Characteristic.builder()
+                .descriptions(Collections.singletonList(description))
+                .build();
     }
 
     private EvolutionChain getEvolutionChain() {
@@ -99,9 +113,23 @@ class PokeApiAdapterTest {
     }
 
     private PokemonResource getPokemonResource() {
+        PokemonAbility pokemonAbility = PokemonAbility.builder()
+                .ability(getNamedResource("some-ability"))
+                .build();
+        PokemonType pokemonType = PokemonType.builder()
+                .type(getNamedResource("some-type"))
+                .build();
+        PokemonSprites pokemonSprites = PokemonSprites.builder()
+                .frontDefault("thumbnail").frontDetail("high-quality")
+                .build();
         return PokemonResource.builder()
                 .id(1L)
+                .name("some-name")
+                .weight(100)
+                .abilities(Collections.singletonList(pokemonAbility))
+                .types(Collections.singletonList(pokemonType))
                 .species(getNamedResource("some-specie", "species-url"))
+                .sprites(pokemonSprites)
                 .build();
     }
 
@@ -109,6 +137,9 @@ class PokeApiAdapterTest {
         List<NamedResource> results =
                 Arrays.asList(getNamedResource(firstName), getNamedResource(secondName));
         return PokemonResponse.builder()
+                .count(2)
+                .next("some-next-link")
+                .previous("some-previous-link")
                 .results(results)
                 .build();
     }
@@ -119,8 +150,7 @@ class PokeApiAdapterTest {
 
     private NamedResource getNamedResource(String name, String url) {
         return NamedResource.builder()
-                .name(name)
-                .url(url)
+                .name(name).url(url)
                 .build();
     }
 }

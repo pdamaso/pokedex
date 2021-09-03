@@ -14,7 +14,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NamedResource implements Serializable {
-
     private String name;
     private String url;
 }

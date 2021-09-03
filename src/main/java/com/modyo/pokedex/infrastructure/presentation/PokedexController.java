@@ -3,6 +3,7 @@ package com.modyo.pokedex.infrastructure.presentation;
 import com.modyo.pokedex.domain.PokedexService;
 import com.modyo.pokedex.domain.model.BasePokemon;
 import com.modyo.pokedex.domain.model.DetailedPokemon;
+import com.modyo.pokedex.infrastructure.presentation.model.ResourceAssembler;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,6 @@ public class PokedexController {
     public ResponseEntity<RepresentationModel<?>> get(
             @RequestParam(required = false, defaultValue = "0") long offset,
             @RequestParam(required = false, defaultValue = "20") long limit) {
-
         List<BasePokemon> pokemons = pokedexService.getPokemons(offset, limit);
         RepresentationModel<?> model = resourceAssembler.assembleResponse(pokemons, offset, limit);
         return ResponseEntity.ok(model);
@@ -38,7 +38,6 @@ public class PokedexController {
 
     @GetMapping(value = "/{name}")
     public ResponseEntity<DetailedPokemon> get(@PathVariable String name) {
-
         DetailedPokemon pokemon = pokedexService.getPokemon(name);
         return ResponseEntity.ok(pokemon);
     }

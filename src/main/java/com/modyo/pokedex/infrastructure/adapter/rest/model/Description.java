@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -14,4 +15,10 @@ import java.io.Serializable;
 public class Description implements Serializable {
     private String description;
     private NamedResource language;
+
+    public boolean belongsTo(String lang) {
+        return Optional.ofNullable(language)
+                .map(namedResource -> lang.equalsIgnoreCase(namedResource.getName()))
+                .orElse(false);
+    }
 }

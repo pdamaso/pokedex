@@ -20,7 +20,7 @@ public class Characteristic implements Serializable {
     public String fetchDescription(String language) {
         return Optional.ofNullable(descriptions).orElse(Collections.emptyList())
                 .stream()
-                .filter(description -> language.equalsIgnoreCase(description.getLanguage().getName()))
+                .filter(description -> description.belongsTo(language))
                 .map(Description::getDescription)
                 .findFirst().orElse("");
     }

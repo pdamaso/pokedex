@@ -30,6 +30,6 @@ class PokedexServiceTest {
     @Test
     void shouldGetPokemonByName() {
         pokedexService.getPokemon("name");
-        then(getPokemonDetailsPort).should().get("name");
+        then(getPokemonDetailsPort).should().getPokemon("name");
     }
 }

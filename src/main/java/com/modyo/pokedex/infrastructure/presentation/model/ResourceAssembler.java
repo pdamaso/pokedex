@@ -1,7 +1,9 @@
-package com.modyo.pokedex.infrastructure.presentation;
+package com.modyo.pokedex.infrastructure.presentation.model;
 
 import com.modyo.pokedex.domain.model.BasePokemon;
+import com.modyo.pokedex.infrastructure.presentation.PokedexController;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -26,7 +28,7 @@ public class ResourceAssembler {
 
     private void addLink(RepresentationModel<?> model, String relation, long offset, long limit) {
         if (offset >= 0) {
-            model.add(linkTo(methodOn(PokedexController.class).get(offset, limit)).withRel(relation));
+            model.add(WebMvcLinkBuilder.linkTo(methodOn(PokedexController.class).get(offset, limit)).withRel(relation));
         }
     }
 

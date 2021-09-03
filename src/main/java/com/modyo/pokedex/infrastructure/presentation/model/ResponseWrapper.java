@@ -1,4 +1,4 @@
-package com.modyo.pokedex.infrastructure.presentation;
+package com.modyo.pokedex.infrastructure.presentation.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

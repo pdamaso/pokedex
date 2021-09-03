@@ -25,6 +25,6 @@ public class PokedexService {
     }
 
     public DetailedPokemon getPokemon(String name) {
-        return getPokemonDetailsPort.get(name);
+        return getPokemonDetailsPort.getPokemon(name);
     }
 }
