@@ -1,0 +1,6 @@
+{
+  "name": "pokedex-api",
+  "description": "API to get pokemon details",
+  "image": "heroku/gradle",
+  "addons": []
+}
