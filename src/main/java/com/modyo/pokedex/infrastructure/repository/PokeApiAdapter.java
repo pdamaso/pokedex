@@ -1,15 +1,15 @@
-package com.modyo.pokedex.infrastructure.adapter;
+package com.modyo.pokedex.infrastructure.repository;
 
 import com.modyo.pokedex.domain.model.BasePokemon;
 import com.modyo.pokedex.domain.model.DetailedPokemon;
 import com.modyo.pokedex.domain.port.GetPokemonDetailsPort;
 import com.modyo.pokedex.domain.port.GetPokemonsPort;
-import com.modyo.pokedex.infrastructure.adapter.rest.PokeApiProxy;
-import com.modyo.pokedex.infrastructure.adapter.rest.model.Characteristic;
-import com.modyo.pokedex.infrastructure.adapter.rest.model.EvolutionChain;
-import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonResource;
-import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonResponse;
-import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonSpecies;
+import com.modyo.pokedex.infrastructure.repository.rest.PokeApiProxy;
+import com.modyo.pokedex.infrastructure.repository.rest.model.Characteristic;
+import com.modyo.pokedex.infrastructure.repository.rest.model.EvolutionChain;
+import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonResource;
+import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonResponse;
+import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonSpecies;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

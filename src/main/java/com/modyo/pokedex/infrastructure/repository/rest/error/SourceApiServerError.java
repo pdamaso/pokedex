@@ -1,4 +1,4 @@
-package com.modyo.pokedex.infrastructure.adapter.rest.error;
+package com.modyo.pokedex.infrastructure.repository.rest.error;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
 package com.modyo.pokedex.infrastructure.presentation;
 
-import com.modyo.pokedex.infrastructure.adapter.rest.error.SourceApiClientError;
-import com.modyo.pokedex.infrastructure.adapter.rest.error.SourceApiServerError;
+import com.modyo.pokedex.infrastructure.repository.rest.error.SourceApiClientError;
+import com.modyo.pokedex.infrastructure.repository.rest.error.SourceApiServerError;
 import com.modyo.pokedex.infrastructure.presentation.model.ApiError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

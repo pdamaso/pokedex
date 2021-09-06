@@ -1,4 +1,4 @@
-package com.modyo.pokedex.infrastructure.adapter.rest.model;
+package com.modyo.pokedex.infrastructure.repository.rest.model;
 
 import com.modyo.pokedex.domain.model.BasePokemon;
 import com.modyo.pokedex.domain.model.DetailedPokemon;

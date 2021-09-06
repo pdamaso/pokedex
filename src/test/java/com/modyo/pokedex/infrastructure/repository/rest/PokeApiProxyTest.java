@@ -1,12 +1,12 @@
-package com.modyo.pokedex.infrastructure.adapter.rest;
+package com.modyo.pokedex.infrastructure.repository.rest;
 
-import com.modyo.pokedex.infrastructure.adapter.rest.error.SourceApiClientError;
-import com.modyo.pokedex.infrastructure.adapter.rest.error.SourceApiServerError;
-import com.modyo.pokedex.infrastructure.adapter.rest.model.Characteristic;
-import com.modyo.pokedex.infrastructure.adapter.rest.model.EvolutionChain;
-import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonResource;
-import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonResponse;
-import com.modyo.pokedex.infrastructure.adapter.rest.model.PokemonSpecies;
+import com.modyo.pokedex.infrastructure.repository.rest.error.SourceApiClientError;
+import com.modyo.pokedex.infrastructure.repository.rest.error.SourceApiServerError;
+import com.modyo.pokedex.infrastructure.repository.rest.model.Characteristic;
+import com.modyo.pokedex.infrastructure.repository.rest.model.EvolutionChain;
+import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonResource;
+import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonResponse;
+import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonSpecies;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
