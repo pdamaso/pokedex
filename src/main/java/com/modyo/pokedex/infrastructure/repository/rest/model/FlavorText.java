@@ -1,5 +1,6 @@
 package com.modyo.pokedex.infrastructure.repository.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,8 @@ import java.util.Optional;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Description implements Serializable {
+public class FlavorText implements Serializable {
+    @JsonProperty("flavor_text")
     private String description;
     private NamedResource language;
 

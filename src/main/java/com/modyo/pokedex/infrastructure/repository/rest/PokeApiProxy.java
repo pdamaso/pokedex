@@ -2,7 +2,6 @@ package com.modyo.pokedex.infrastructure.repository.rest;
 
 import com.modyo.pokedex.infrastructure.repository.rest.error.SourceApiClientError;
 import com.modyo.pokedex.infrastructure.repository.rest.error.SourceApiServerError;
-import com.modyo.pokedex.infrastructure.repository.rest.model.Characteristic;
 import com.modyo.pokedex.infrastructure.repository.rest.model.EvolutionChain;
 import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonResource;
 import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonResponse;
@@ -25,14 +24,11 @@ public class PokeApiProxy {
 
     private final RestTemplate restTemplate;
     private final String pokemonUrl;
-    private final String characteristicUrl;
 
     public PokeApiProxy(RestTemplate restTemplate,
-                        @Value("${pokeapi.pokemon.url}") String pokemonUrl,
-                        @Value("${pokeapi.characteristic.url}") String characteristicUrl) {
+                        @Value("${pokeapi.pokemon.url}") String pokemonUrl) {
         this.restTemplate = restTemplate;
         this.pokemonUrl = pokemonUrl;
-        this.characteristicUrl = characteristicUrl;
     }
 
     public PokemonResponse getPokemons(long offset, long limit) {
@@ -63,12 +59,6 @@ public class PokeApiProxy {
         return fetchResource(url, EvolutionChain.class);
     }
 
-    @Cacheable("characteristic")
-    public Characteristic getCharacteristic(Long id) {
-        String resourceUrl = characteristicUrl.concat(String.valueOf(id));
-        log.info("gettingCharacteristicByUrl, url={}", resourceUrl);
-        return fetchResource(resourceUrl, Characteristic.class);
-    }
 
     private <T> T fetchResource(String resourceUrl, Class<T> responseType) {
         try {

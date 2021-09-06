@@ -4,9 +4,8 @@ import com.modyo.pokedex.domain.model.BasePokemon;
 import com.modyo.pokedex.domain.model.DetailedPokemon;
 import com.modyo.pokedex.infrastructure.repository.rest.PokeApiProxy;
 import com.modyo.pokedex.infrastructure.repository.rest.model.ChainLink;
-import com.modyo.pokedex.infrastructure.repository.rest.model.Characteristic;
-import com.modyo.pokedex.infrastructure.repository.rest.model.Description;
 import com.modyo.pokedex.infrastructure.repository.rest.model.EvolutionChain;
+import com.modyo.pokedex.infrastructure.repository.rest.model.FlavorText;
 import com.modyo.pokedex.infrastructure.repository.rest.model.NamedResource;
 import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonAbility;
 import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonResource;
@@ -74,22 +73,9 @@ class PokeApiAdapterTest {
         given(pokeApiProxy.getEvolutions("evolution-chain-url"))
                 .willReturn(evolutionChain);
 
-        Characteristic characteristic = getCharacteristic();
-        given(pokeApiProxy.getCharacteristic(1L))
-                .willReturn(characteristic);
-
         DetailedPokemon pokemon = pokeApiAdapter.getPokemon("name");
 
         assertThat(pokemon.getEvolutions()).containsOnly("some-specie", "another-specie");
-    }
-
-    private Characteristic getCharacteristic() {
-        Description description = Description.builder()
-                .description("some-description")
-                .build();
-        return Characteristic.builder()
-                .descriptions(Collections.singletonList(description))
-                .build();
     }
 
     private EvolutionChain getEvolutionChain() {
@@ -107,8 +93,13 @@ class PokeApiAdapterTest {
     }
 
     private PokemonSpecies getSpecies() {
+        FlavorText flavorText = FlavorText.builder()
+                .description("some flavor description")
+                .language(getNamedResource("en"))
+                .build();
         return PokemonSpecies.builder()
                 .evolutionChain(getNamedResource("", "evolution-chain-url"))
+                .flavorText(Collections.singletonList(flavorText))
                 .build();
     }
 

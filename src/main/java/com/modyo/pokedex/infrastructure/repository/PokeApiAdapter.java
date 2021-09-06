@@ -5,7 +5,6 @@ import com.modyo.pokedex.domain.model.DetailedPokemon;
 import com.modyo.pokedex.domain.port.GetPokemonDetailsPort;
 import com.modyo.pokedex.domain.port.GetPokemonsPort;
 import com.modyo.pokedex.infrastructure.repository.rest.PokeApiProxy;
-import com.modyo.pokedex.infrastructure.repository.rest.model.Characteristic;
 import com.modyo.pokedex.infrastructure.repository.rest.model.EvolutionChain;
 import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonResource;
 import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonResponse;
@@ -36,19 +35,18 @@ public class PokeApiAdapter implements GetPokemonsPort, GetPokemonDetailsPort {
     @Override
     public DetailedPokemon getPokemon(String name) {
         PokemonResource pokemonResource = pokeApiProxy.getPokemonResource(name);
-        String description = getDescription(pokemonResource);
-        List<String> evolutions = getEvolutions(pokemonResource);
+        PokemonSpecies species = getSpecies(pokemonResource);
+        List<String> evolutions = getEvolutions(species);
+        String description = species.getDescription("en");
         return pokemonResource.toDomain(description, evolutions);
     }
 
-    private String getDescription(PokemonResource pokemonResource) {
-        Characteristic characteristic = pokeApiProxy.getCharacteristic(pokemonResource.getId());
-        return characteristic.fetchDescription("en");
+    private PokemonSpecies getSpecies(PokemonResource pokemonResource) {
+        String speciesUrl = pokemonResource.getSpecies().getUrl();
+        return pokeApiProxy.getSpecies(speciesUrl);
     }
 
-    private List<String> getEvolutions(PokemonResource pokemonResource) {
-        String speciesUrl = pokemonResource.getSpecies().getUrl();
-        PokemonSpecies species = pokeApiProxy.getSpecies(speciesUrl);
+    private List<String> getEvolutions(PokemonSpecies species) {
         String evolutionChainUrl = species.getEvolutionChain().getUrl();
         EvolutionChain evolutionChain = pokeApiProxy.getEvolutions(evolutionChainUrl);
         return evolutionChain.getEvolutions();

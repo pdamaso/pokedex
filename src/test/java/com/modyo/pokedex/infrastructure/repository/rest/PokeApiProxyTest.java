@@ -2,7 +2,6 @@ package com.modyo.pokedex.infrastructure.repository.rest;
 
 import com.modyo.pokedex.infrastructure.repository.rest.error.SourceApiClientError;
 import com.modyo.pokedex.infrastructure.repository.rest.error.SourceApiServerError;
-import com.modyo.pokedex.infrastructure.repository.rest.model.Characteristic;
 import com.modyo.pokedex.infrastructure.repository.rest.model.EvolutionChain;
 import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonResource;
 import com.modyo.pokedex.infrastructure.repository.rest.model.PokemonResponse;
@@ -33,13 +32,11 @@ class PokeApiProxyTest {
     @Mock
     private RestTemplate restTemplate;
     private String pokemonUrl;
-    private String characteristicUrl;
 
     @BeforeEach
     void setUp() {
         pokemonUrl = "http://some-url/poke/";
-        characteristicUrl = "http://some-url/char/";
-        pokeApiProxy = new PokeApiProxy(restTemplate, pokemonUrl, characteristicUrl);
+        pokeApiProxy = new PokeApiProxy(restTemplate, pokemonUrl);
     }
 
     @Test
@@ -75,14 +72,6 @@ class PokeApiProxyTest {
                 .willReturn(ResponseEntity.ok().build());
         pokeApiProxy.getEvolutions(resourceUrl);
         then(restTemplate).should().getForEntity(resourceUrl, EvolutionChain.class);
-    }
-
-    @Test
-    void shouldGetCharacteristic() {
-        given(restTemplate.getForEntity(characteristicUrl.concat("123"), Characteristic.class))
-                .willReturn(ResponseEntity.ok().build());
-        pokeApiProxy.getCharacteristic(123L);
-        then(restTemplate).should().getForEntity(characteristicUrl.concat("123"), Characteristic.class);
     }
 
     @Test
